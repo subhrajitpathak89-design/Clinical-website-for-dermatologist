@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { motion } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
 import { 
   ChevronRight, 
   Menu, 
@@ -17,9 +17,14 @@ import {
   Facebook, 
   Linkedin,
   ArrowRight,
-  Plus
+  Plus,
+  Send,
+  User,
+  Mail,
+  Smartphone,
+  MessageSquare
 } from "lucide-react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
 const fadeIn = {
   initial: { opacity: 0, y: 20 },
@@ -37,6 +42,8 @@ const staggerContainer = {
 
 export default function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isBookingOpen, setIsBookingOpen] = useState(false);
+  const [formStep, setFormStep] = useState('filling'); // 'filling' | 'submitting' | 'success'
   const [scrolled, setScrolled] = useState(false);
   const [marqueeDuration, setMarqueeDuration] = useState(40);
 
@@ -47,6 +54,21 @@ export default function App() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const handleBookingSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setFormStep('submitting');
+    // Simulate API call
+    setTimeout(() => {
+      setFormStep('success');
+    }, 1500);
+  };
+
+  const closeBooking = () => {
+    setIsBookingOpen(false);
+    // Reset form after closing animation
+    setTimeout(() => setFormStep('filling'), 500);
+  };
 
   return (
     <div className="min-h-screen">
@@ -75,6 +97,7 @@ export default function App() {
               </a>
             ))}
             <button 
+              onClick={() => setIsBookingOpen(true)}
               className="bg-primary text-white px-8 py-3 rounded-full text-[13px] font-bold uppercase tracking-widest hover:bg-accent transition-all duration-300 shadow-xl shadow-primary/10"
             >
               Consultation
@@ -103,7 +126,10 @@ export default function App() {
                 {item}
               </a>
             ))}
-            <button className="bg-primary text-white w-full py-5 rounded-2xl text-lg font-bold tracking-widest uppercase mt-4">
+            <button 
+              onClick={() => { setIsBookingOpen(true); setIsMenuOpen(false); }}
+              className="bg-primary text-white w-full py-5 rounded-2xl text-lg font-bold tracking-widest uppercase mt-4"
+            >
               Book Appointment
             </button>
           </motion.div>
@@ -140,12 +166,15 @@ export default function App() {
             </motion.p>
             
             <motion.div variants={fadeIn} className="flex flex-col sm:flex-row gap-4 mt-2">
-              <button className="bg-primary text-white px-7 py-3.5 rounded-full text-[12px] font-extrabold uppercase tracking-[0.15em] hover:bg-accent transition-all duration-300 shadow-xl shadow-primary/10 flex items-center justify-center gap-2">
+              <button 
+                onClick={() => setIsBookingOpen(true)}
+                className="bg-primary text-white px-7 py-3.5 rounded-full text-[12px] font-extrabold uppercase tracking-[0.15em] hover:bg-accent transition-all duration-300 shadow-xl shadow-primary/10 flex items-center justify-center gap-2"
+              >
                 Book Consultation <ArrowRight size={16} />
               </button>
-              <button className="bg-white text-primary px-7 py-3.5 rounded-full text-[12px] font-extrabold uppercase tracking-[0.15em] hover:bg-gray-50 transition-all border border-gray-100 flex items-center justify-center shadow-sm">
+              <a href="#specialists" className="bg-white text-primary px-7 py-3.5 rounded-full text-[12px] font-extrabold uppercase tracking-[0.15em] hover:bg-gray-50 transition-all border border-gray-100 flex items-center justify-center shadow-sm">
                 Our Specialists
-              </button>
+              </a>
             </motion.div>
 
             <motion.div variants={fadeIn} className="pt-10 flex items-center gap-10">
@@ -394,7 +423,7 @@ export default function App() {
                 <div key={listIdx} className="flex gap-8">
                   {[
                     { name: 'Julianne Vance', text: 'Lumoderm changed my perspective on skin health. Their approach is unlike any clinic I have visited.', img: 'https://images.unsplash.com/photo-1544005313-94ddf028fb8d?q=80&w=200' },
-                    { name: 'Robert Sterling', text: 'The precision in their diagnostic lab is unmatched. Finally solved my chronic skin issues.', img: '/src/assets/images/regenerated_image_1778434254417.png' },
+                    { name: 'Robert Sterling', text: 'The precision in their diagnostic lab is unmatched. Finally solved my chronic skin issues.', img: '/src/assets/images/regenerated_image_1778434962771.jpg' },
                     { name: 'Sofia Martinez', text: 'Beautiful space with world-class clinical results. I highly recommend their laser therapies.', img: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?q=80&w=200' },
                     { name: 'Elena Rostova', text: 'Professionalism at its finest. The staff is knowledgeable and the results are truly visible.', img: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=200' },
                   ].map((testi, i) => (
@@ -434,10 +463,16 @@ export default function App() {
               <h2 className="text-5xl md:text-7xl font-display font-bold leading-[0.9] mb-10 tracking-tighter">Your skin's <br /><span className="text-white/30 italic font-light">brightest era.</span></h2>
               <p className="text-lg text-white/50 font-normal mb-12 max-w-md leading-relaxed">Schedule your first clinical analysis today. Our specialists are ready to design your path to radiant health.</p>
               <div className="flex gap-4">
-                <button className="bg-accent text-white px-10 py-5 rounded-full text-[13px] font-black uppercase tracking-[0.2em] hover:bg-white hover:text-primary transition-all shadow-xl">
+                <button 
+                  onClick={() => setIsBookingOpen(true)}
+                  className="bg-accent text-white px-10 py-5 rounded-full text-[13px] font-black uppercase tracking-[0.2em] hover:bg-white hover:text-primary transition-all shadow-xl"
+                >
                   Get Started
                 </button>
-                <button className="bg-white/10 text-white border border-white/20 px-10 py-5 rounded-full text-[13px] font-black uppercase tracking-[0.2em] hover:bg-white/20 transition-all">
+                <button 
+                  onClick={() => setIsBookingOpen(true)}
+                  className="bg-white/10 text-white border border-white/20 px-10 py-5 rounded-full text-[13px] font-black uppercase tracking-[0.2em] hover:bg-white/20 transition-all"
+                >
                   Contact Us
                 </button>
               </div>
@@ -472,6 +507,181 @@ export default function App() {
           </div>
         </div>
       </footer>
+
+      {/* Booking Modal */}
+      <AnimatePresence>
+        {isBookingOpen && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-6">
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={closeBooking}
+              className="absolute inset-0 bg-primary/40 backdrop-blur-md"
+            />
+            
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              className="relative w-full max-w-2xl bg-white rounded-[3.5rem] overflow-hidden shadow-2xl"
+            >
+              <button 
+                onClick={closeBooking}
+                className="absolute top-8 right-8 p-3 rounded-full hover:bg-gray-50 transition-colors z-20"
+              >
+                <X size={24} className="text-gray-400" />
+              </button>
+
+              <div className="grid md:grid-cols-[1fr_1.5fr] min-h-[600px]">
+                {/* Modal Sidebar */}
+                <div className="bg-medical p-10 hidden md:flex flex-col justify-between">
+                  <div>
+                    <div className="flex items-center gap-3 mb-12">
+                      <div className="w-8 h-8 bg-accent rounded-lg flex items-center justify-center">
+                        <div className="w-4 h-4 border-2 border-white rounded-full" />
+                      </div>
+                      <span className="text-sm font-display font-bold tracking-tighter uppercase whitespace-nowrap">LUMODERM</span>
+                    </div>
+                    <h3 className="text-2xl font-bold mb-4 tracking-tight">Personalized <br />Analysis</h3>
+                    <p className="text-xs text-gray-400 font-medium leading-relaxed">Schedule a scientific evaluation of your skin with our senior medical staff.</p>
+                  </div>
+
+                  <div className="space-y-6">
+                    <div className="flex items-center gap-4">
+                      <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-accent shadow-sm">
+                        <ShieldCheck size={20} />
+                      </div>
+                      <p className="text-[10px] font-black uppercase tracking-widest leading-tight">Board Certified <br />Specialists</p>
+                    </div>
+                    <div className="flex items-center gap-4">
+                      <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-accent shadow-sm">
+                        <Clock size={20} />
+                      </div>
+                      <p className="text-[10px] font-black uppercase tracking-widest leading-tight">Prompt Clinical <br />Consultations</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Modal Form */}
+                <div className="p-10 md:p-12">
+                  <AnimatePresence mode="wait">
+                    {formStep === 'filling' || formStep === 'submitting' ? (
+                      <motion.div 
+                        key="form"
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: -20 }}
+                      >
+                        <div className="mb-10">
+                          <span className="text-accent text-[10px] font-black uppercase tracking-[0.4em] mb-2 block">Booking Portal</span>
+                          <h2 className="text-3xl font-bold tracking-tight">Clinical Intake</h2>
+                        </div>
+
+                        <form onSubmit={handleBookingSubmit} className="space-y-5">
+                          <div className="relative">
+                            <User className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300" size={18} />
+                            <input 
+                              required
+                              type="text" 
+                              placeholder="FULL NAME"
+                              className="w-full bg-gray-50 border-none rounded-2xl py-4 pl-12 pr-6 text-[12px] font-bold tracking-widest placeholder:text-gray-300 focus:ring-2 focus:ring-accent/20 outline-none transition-all"
+                            />
+                          </div>
+                          
+                          <div className="grid grid-cols-2 gap-4">
+                            <div className="relative">
+                              <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300" size={18} />
+                              <input 
+                                required
+                                type="email" 
+                                placeholder="EMAIL ADDRESS"
+                                className="w-full bg-gray-50 border-none rounded-2xl py-4 pl-12 pr-6 text-[12px] font-bold tracking-widest placeholder:text-gray-300 focus:ring-2 focus:ring-accent/20 outline-none transition-all"
+                              />
+                            </div>
+                            <div className="relative">
+                              <Smartphone className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300" size={18} />
+                              <input 
+                                required
+                                type="tel" 
+                                placeholder="PHONE NUMBER"
+                                className="w-full bg-gray-50 border-none rounded-2xl py-4 pl-12 pr-6 text-[12px] font-bold tracking-widest placeholder:text-gray-300 focus:ring-2 focus:ring-accent/20 outline-none transition-all"
+                              />
+                            </div>
+                          </div>
+
+                          <div className="relative">
+                            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300 pointer-events-none">
+                              <Plus size={18} />
+                            </span>
+                            <select 
+                              required
+                              className="w-full bg-gray-50 border-none rounded-2xl py-4 pl-12 pr-6 text-[12px] font-bold tracking-widest text-primary focus:ring-2 focus:ring-accent/20 outline-none transition-all appearance-none uppercase"
+                            >
+                              <option value="">PREFERRED TREATMENT</option>
+                              <option value="dermal">CLINICAL THERAPY</option>
+                              <option value="laser">LASER SUITE</option>
+                              <option value="facial">MOLECULAR FACIALS</option>
+                              <option value="other">GENERAL CONSULTATION</option>
+                            </select>
+                          </div>
+
+                          <div className="relative">
+                            <MessageSquare className="absolute left-4 top-5 text-gray-300" size={18} />
+                            <textarea 
+                              placeholder="CLINICAL NOTES / CONCERNS"
+                              rows={3}
+                              className="w-full bg-gray-50 border-none rounded-2xl py-4 pl-12 pr-6 text-[12px] font-bold tracking-widest placeholder:text-gray-300 focus:ring-2 focus:ring-accent/20 outline-none transition-all resize-none"
+                            ></textarea>
+                          </div>
+
+                          <button 
+                            disabled={formStep === 'submitting'}
+                            className="bg-primary text-white w-full py-5 rounded-2xl text-[12px] font-black tracking-[0.2em] uppercase hover:bg-accent transition-all shadow-xl shadow-primary/10 flex items-center justify-center gap-3 disabled:opacity-50"
+                          >
+                            {formStep === 'submitting' ? (
+                              <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                            ) : (
+                              <>SUBMIT REQUEST <Send size={16} /></>
+                            )}
+                          </button>
+                        </form>
+                      </motion.div>
+                    ) : (
+                      <motion.div 
+                        key="success"
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        className="h-full flex flex-col items-center justify-center text-center py-20"
+                      >
+                        <div className="w-24 h-24 bg-accent/10 rounded-full flex items-center justify-center text-accent mb-8">
+                          <motion.div
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            transition={{ type: "spring", damping: 12, stiffness: 200 }}
+                          >
+                            <ShieldCheck size={48} />
+                          </motion.div>
+                        </div>
+                        <h2 className="text-3xl font-bold tracking-tight mb-4">Request Received</h2>
+                        <p className="text-sm text-gray-400 font-medium leading-relaxed max-w-[280px]">
+                          Our medical coordinators will contact you within 2 clinical hours to confirm your analysis appointment.
+                        </p>
+                        <button 
+                          onClick={closeBooking}
+                          className="mt-12 text-[11px] font-black uppercase tracking-[0.3em] text-accent hover:text-primary transition-colors"
+                        >
+                          Return to Home
+                        </button>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
