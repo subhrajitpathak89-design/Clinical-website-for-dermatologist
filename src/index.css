@@ -1,0 +1,56 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Plus Jakarta Sans", sans-serif;
+  --color-primary: #0F172A;
+  --color-accent: #2563EB;
+  --color-medical: #F8FAFC;
+  
+  --animate-marquee: marquee 40s linear infinite;
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    @apply antialiased;
+  }
+  
+  body {
+    @apply font-sans text-primary bg-white selection:bg-accent/10 selection:text-accent overflow-x-hidden text-[15px] leading-relaxed transition-colors duration-500;
+  }
+  
+  h1, h2, h3, h4 {
+    @apply font-display tracking-tight text-primary;
+  }
+}
+
+.glass-nav {
+  @apply sticky top-0 z-50 bg-white/70 backdrop-blur-xl border-b border-gray-100/50;
+}
+
+.modern-card {
+  @apply bg-white rounded-[2.5rem] border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-all duration-700 hover:shadow-[0_40px_80px_-15px_rgb(37,99,235,0.08)] hover:-translate-y-3;
+}
+
+.section-padding {
+  @apply py-24 lg:py-40;
+}
+
+.container-limit {
+  @apply max-w-7xl mx-auto px-6 md:px-12;
+}
+
+.marquee-container {
+  @apply flex overflow-hidden select-none gap-8;
+}
+
+.marquee-content {
+  @apply flex shrink-0 justify-around gap-8 min-w-full animate-marquee hover:[animation-play-state:paused];
+}
