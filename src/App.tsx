@@ -26,6 +26,13 @@ import {
 } from "lucide-react";
 import React, { useState, useEffect } from "react";
 
+import avatarImg2 from "./assets/images/regenerated_image_1778434022230.jpg";
+import avatarImg3 from "./assets/images/regenerated_image_1778434026812.png";
+import avatarImg4 from "./assets/images/regenerated_image_1778434018325.png";
+import serviceImg3 from "./assets/images/regenerated_image_1778433673268.png";
+import specialistImg from "./assets/images/regenerated_image_1778433762830.png";
+import testimonialImg2 from "./assets/images/regenerated_image_1778434962771.jpg";
+
 const fadeIn = {
   initial: { opacity: 0, y: 20 },
   animate: { opacity: 1, y: 0 },
@@ -181,9 +188,9 @@ export default function App() {
               <div className="flex -space-x-3">
                 {[
                   { id: 1, img: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=100' },
-                  { id: 2, img: '/src/assets/images/regenerated_image_1778434022230.jpg' },
-                  { id: 3, img: '/src/assets/images/regenerated_image_1778434026812.png' },
-                  { id: 4, img: '/src/assets/images/regenerated_image_1778434018325.png' }
+                  { id: 2, img: avatarImg2 },
+                  { id: 3, img: avatarImg3 },
+                  { id: 4, img: avatarImg4 }
                 ].map((avatar) => (
                   <div key={avatar.id} className="w-12 h-12 rounded-full border-4 border-white bg-gray-100 overflow-hidden shadow-sm">
                     <img 
@@ -246,7 +253,7 @@ export default function App() {
       </section>
 
       {/* Precision Stats */}
-      <section className="bg-medical border-y border-gray-100 section-padding">
+      <section id="clinical-lab" className="bg-medical border-y border-gray-100 section-padding">
         <div className="container-limit">
           <div className="grid md:grid-cols-4 gap-12 lg:gap-24">
             {[
@@ -305,7 +312,7 @@ export default function App() {
                 idx: '03', 
                 title: 'Molecular Facials', 
                 desc: 'Deep dermal revitalization using ultrasonic technology.',
-                img: '/src/assets/images/regenerated_image_1778433673268.png'
+                img: serviceImg3
               }
             ].map((service, i) => (
               <motion.div 
@@ -376,7 +383,7 @@ export default function App() {
           >
             <div className="aspect-[4/5] rounded-[4rem] overflow-hidden shadow-2xl relative z-10 bg-gray-100">
               <img 
-                src="/src/assets/images/regenerated_image_1778433762830.png" 
+                src={specialistImg} 
                 className="w-full h-full object-cover transition-all duration-700" 
                 alt="Clinic Specialist" 
                 referrerPolicy="no-referrer" 
@@ -423,7 +430,7 @@ export default function App() {
                 <div key={listIdx} className="flex gap-8">
                   {[
                     { name: 'Julianne Vance', text: 'Lumoderm changed my perspective on skin health. Their approach is unlike any clinic I have visited.', img: 'https://images.unsplash.com/photo-1544005313-94ddf028fb8d?q=80&w=200' },
-                    { name: 'Robert Sterling', text: 'The precision in their diagnostic lab is unmatched. Finally solved my chronic skin issues.', img: '/src/assets/images/regenerated_image_1778434962771.jpg' },
+                    { name: 'Robert Sterling', text: 'The precision in their diagnostic lab is unmatched. Finally solved my chronic skin issues.', img: testimonialImg2 },
                     { name: 'Sofia Martinez', text: 'Beautiful space with world-class clinical results. I highly recommend their laser therapies.', img: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?q=80&w=200' },
                     { name: 'Elena Rostova', text: 'Professionalism at its finest. The staff is knowledgeable and the results are truly visible.', img: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=200' },
                   ].map((testi, i) => (
